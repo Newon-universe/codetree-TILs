@@ -22,7 +22,7 @@ for i in 1 ..< n - 1 {
     var temp = Coordinate(0, 0)
     var distance = 0
 
-    for j in 1 ..< n {
+    for j in 0 ..< n {
         if i == j { continue }
 
         temp.x = abs(temp.x - checkPoints[j].x)
