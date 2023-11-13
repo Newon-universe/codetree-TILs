@@ -7,32 +7,8 @@ struct Coordinate: Hashable {
     }
 }
 
-func combination(_ depth: Int, _ trace: [Coordinate]) {
-    if depth == n - 1 {
-        guard trace.count == n - 1 else { return }
-
-        var containStart = false
-        var containEnd = false
-
-        if trace[0].y == checkPoints[0].y && trace[0].x == checkPoints[0].x { containStart = true }
-        if trace[n - 2].y == checkPoints[n - 1].y && trace[n - 2].x == checkPoints[n - 1].x { containEnd = true }
-
-        if containStart && containEnd { skippedCheckpoints.append(trace) }
-
-        return
-    }
-
-    for i in depth ..< n {
-        guard !trace.contains(checkPoints[i]) else { continue }
-
-        var nextTrace = trace + [checkPoints[i]]
-        combination(depth + 1, nextTrace)
-    }
-}
-
 let n = Int(readLine()!)!
 var checkPoints = [Coordinate]()
-var skippedCheckpoints = [[Coordinate]]()
 var result = Int.max
 
 for _ in 0 ..< n {
@@ -40,16 +16,16 @@ for _ in 0 ..< n {
     checkPoints.append(Coordinate(raw[1], raw[0]))
 }
 
-combination(0, [])
 
-for point in skippedCheckpoints {
+for i in 1 ..< n - 1 {
     var temp = Coordinate(0, 0)
 
-    for i in 0 ..< point.count {
-        temp.x += abs(temp.x - point[i].x)
-        temp.y += abs(temp.y - point[i].y)
+    for j in 0 ..< n {
+        if i == j { continue }
+        temp.x += abs(temp.x - checkPoints[j].x)
+        temp.y += abs(temp.y - checkPoints[j].y)
     }
-    
+
     result = min(temp.x + temp.y, result)
 }
 
