@@ -1,9 +1,9 @@
 func makeDecimal() -> Int {
     var result = 0
-    for i in stride(from: array.count - 1, to: -1, by: -1) {
+    for i in 0 ..< array.count {
         if array[i] == "1" {
             var temp = 1
-            for _ in 0 ... i { temp *= 2 }
+            for _ in 0 ..< array.count - i - 1 { temp *= 2 }
             result += temp
         }
     }
