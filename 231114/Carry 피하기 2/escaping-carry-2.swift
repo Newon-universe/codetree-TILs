@@ -28,8 +28,6 @@ func dfs(_ depth: Int, _ now: Int) -> Int {
     return result
 }
 
-
-
 let n = Int(readLine()!)!
 var array = [Int]()
 var visited = [Bool](repeating: false, count: n)
@@ -38,4 +36,5 @@ for _ in 0 ..< n {
     array.append(Int(readLine()!)!)
 }
 
-print(dfs(0, 0))
+let result = dfs(0, 0)
+print(result == 0 ? -1 : result)
