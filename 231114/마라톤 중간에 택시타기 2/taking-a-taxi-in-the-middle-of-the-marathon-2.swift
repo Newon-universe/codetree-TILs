@@ -19,15 +19,15 @@ for _ in 0 ..< n {
 }
 
 for i in 1 ..< n - 1 {
-    var temp = Coordinate(0, 0)
+    var temp = checkPoints[0]
     var distance = 0
-
-    for j in 0 ..< n {
+    
+    for j in 1 ..< n {
         if i == j { continue }
+        distance += abs(temp.x - checkPoints[j].x) + abs(temp.y - checkPoints[j].y)
 
-        temp.x = abs(temp.x - checkPoints[j].x)
-        temp.y = abs(temp.y - checkPoints[j].y)
-        distance += temp.x + temp.y
+        temp.x = checkPoints[j].x
+        temp.y = checkPoints[j].y
     }
 
     result = min(distance, result)
