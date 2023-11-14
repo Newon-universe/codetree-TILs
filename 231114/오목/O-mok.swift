@@ -10,7 +10,7 @@ struct Coordinate {
 }
 
 enum Direction: CaseIterable {
-    case Up, Down, Left, Right
+    case Up, Down, Left, Right, LeftDown, RightDown
 }
 
 func check(_ start: Coordinate) -> Coordinate? {
@@ -54,7 +54,26 @@ func check(_ start: Coordinate) -> Coordinate? {
             }
             guard check else { continue }
             return Coordinate(start.y, start.x + 2)
+            
+        case .LeftDown:
+            guard start.y + 4 < 19 && start.x - 4 >= 0 else { break }
+            var check = true
+            for i in 0 ... 4 {
+                if board[start.y + i][start.x - i] != standard { check = false; break }
+            }
+            guard check else { continue }
+            return Coordinate(start.y + 2, start.x - 2)
+
+        case .RightDown:
+            guard start.y + 4 < 19 && start.x + 4 < 19 else { break }
+            var check = true
+            for i in 0 ... 4 {
+                if board[start.y + i][start.x + i] != standard { check = false; break }
+            }
+            guard check else { continue }
+            return Coordinate(start.y + 2, start.x + 2)
         }
+
     }
 
     return nil
