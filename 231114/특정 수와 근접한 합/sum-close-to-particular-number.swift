@@ -1,6 +1,7 @@
 func combination(_ depth: Int, _ now: Int, _ index: Int) {
-    if depth == N - 2 {
-        result = min(abs(now - S), result)
+    if depth == 2 {
+        result = min(abs((total - now) - S), result)
+        return
     }
 
     for i in index ..< N {
@@ -11,6 +12,7 @@ func combination(_ depth: Int, _ now: Int, _ index: Int) {
 let raw = readLine()!.split { $0 == " " }.map { Int($0)! }
 let (N, S) = (raw[0], raw[1])
 let array = readLine()!.split { $0 == " " }.map { Int($0)! }
+let total = array.reduce(0, +)
 
 var result = S
 
