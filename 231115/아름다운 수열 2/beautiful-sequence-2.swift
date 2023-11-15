@@ -24,7 +24,7 @@ permutation(0, [])
 
 for i in 0 ... N - M {
     for element in beautifulB {
-        if Array(A[i ..< i + M]) == element { result += 1 }
+        if Array(A[i ..< i + M]) == element { result += 1; break }
     }
 }
 
