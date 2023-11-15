@@ -7,7 +7,7 @@ for _ in 0 ..< n {
     board[Int(raw[0])!] = String(raw[1])
 }
 
-for range in 2 ... 50 {
+for range in 2 ... 100 {
     for i in 0 ... 101 - range {
         if board[i] == "" { continue }
         var gCount = 0
