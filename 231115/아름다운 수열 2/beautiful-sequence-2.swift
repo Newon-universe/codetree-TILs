@@ -1,16 +1,17 @@
 func solve() {
-    for i in 0 ... N - M {
-        let standard = A[i ..< i + M]
-        var visited = [Bool](repeating: false, count: M)
-
-        standard.forEach {
-            for j in 0 ..< M {
-                guard !visited[j] else { continue }
-                if B[j] == $0 { visited[j] = true }
+    if N >= M {
+        for i in 0 ... N - M {
+            let standard = A[i ..< i + M]
+            var visited = [Bool](repeating: false, count: M)
+            
+            standard.forEach {
+                for j in 0 ..< M {
+                    guard !visited[j] else { continue }
+                    if B[j] == $0 { visited[j] = true }
+                }
             }
+            if visited.allSatisfy { $0 == true } { result += 1 }
         }
-
-        if visited.allSatisfy { $0 == true } { result += 1 }
     }
 }
 
