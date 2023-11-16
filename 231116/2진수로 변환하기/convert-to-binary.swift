@@ -1,4 +1,5 @@
 func makeBinary(_ raw: Int) {
+    guard raw > 0 else { print(0); return }
     var raw = raw
     var result = ""
 
