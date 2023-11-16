@@ -7,14 +7,10 @@ for _ in 0 ..< n {
 }
 
 for water in 0 ... 1000 {
-    var temp = 0
-    var isIce = false
+    var temp = iceBugs[0] > water ? 1 : 0
 
-    for i in 0 ..< n - 1 {
-        isIce = iceBugs[i] > water
-        let isNextIce = iceBugs[i + 1] > water
-
-        if isIce && !isNextIce { temp += 1 }
+    for i in 1 ..< n {
+        if iceBugs[i] > water && iceBugs[i - 1] <= water { temp += 1 }
     }
 
     result = max(temp, result)
