@@ -21,6 +21,8 @@ let (a, b) = (raw[0], raw[1])
 let n = Array(readLine()!).map { Int(String($0))! }
 var result = 0
 
-for i in 0 ..< n.count { result += makePow(i, a) }
+for i in 0 ..< n.count { 
+    result += makePow(n.count - i - 1, a) * n[i]
+}
 
 print(makeB(result))
