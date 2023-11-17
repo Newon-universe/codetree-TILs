@@ -8,10 +8,11 @@ func draw(_ rect: [Int], _ draw: Bool) {
 }
 
 var board = [[Int]](repeating: [Int](repeating: 0, count: 2001), count: 2001)
+let offSet = 1000
 
-let A = readLine()!.split { $0 == " " }.map { Int($0)! }
-let B = readLine()!.split { $0 == " " }.map { Int($0)! }
-let M = readLine()!.split { $0 == " " }.map { Int($0)! }
+let A = readLine()!.split { $0 == " " }.map { Int($0)! + offSet }
+let B = readLine()!.split { $0 == " " }.map { Int($0)! + offSet }
+let M = readLine()!.split { $0 == " " }.map { Int($0)! + offSet }
 var result = 0
 
 draw(A, true)
