@@ -8,10 +8,16 @@ readLine()!.split { $0 == " " }.map { Int($0)! }.forEach {
 }
 
 dict.keys.forEach { key in
-    if dict[k - key, default: 0] > 0 && dict[key, default: 0] > 0 { 
-        dict[k - key, default: 0] -= 1
-        dict[k, default: 0] -= 1
-        result += 1
+    if k - key == key && dict[key, default: 0] > 0 { 
+        for i in 1 ..< dict[key, default: 0] {
+            result += i
+        }
+        dict[key] = 0
+    }
+    else if dict[k - key, default: 0] > 0 && dict[key, default: 0] > 0 { 
+        result += dict[k - key, default: 0] * dict[key, default: 0]
+        dict[k - key] = 0
+        dict[key] = 0
     }
 }
 
