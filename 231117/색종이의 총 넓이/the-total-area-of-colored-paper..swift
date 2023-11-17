@@ -2,7 +2,7 @@ let n = Int(readLine()!)!
 let offSet = 100
 var result = 0
 
-var board = [[Bool]](repeating: [Bool](repeating: false, count: 201), count: 201)
+var board = [[Bool]](repeating: [Bool](repeating: false, count: 210), count: 210)
 for _ in 0 ..< n {
     let coordinate = readLine()!.split { $0 == " " }.map { Int($0)! + offSet }
     
