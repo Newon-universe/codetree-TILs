@@ -9,7 +9,6 @@ func combination(_ depth: Int, _ trace: [Int], _ index: Int) {
     }
 }
 
-
 let raw = readLine()!.split { $0 == " " }.map { Int($0)! }
 let (n, m) = (raw[0], raw[1])
 var board = [[String]]()
@@ -28,23 +27,11 @@ for indices in applicant {
     var count = 1
     
     for i in 0 ..< n {
-        var a = ""
-        for j in indices {
-            a += board[i][j]
-        }
-        aSet.insert(a)
+        aSet.insert("\(board[i][indices[0]])\(board[i][indices[1]])\(board[i][indices[2]])")
     }
     
     for i in n ..< 2 * n {
-        var b = ""
-        for j in indices {
-            b += board[i][j]
-        }
-        bSet.insert(b)
-    }
-
-    for a in aSet {
-        if bSet.contains(a) { count -= 1; break }
+        if aSet.contains("\(board[i][indices[0]])\(board[i][indices[1]])\(board[i][indices[2]])") { count -= 1; break }
     }
 
     result += count
