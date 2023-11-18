@@ -3,29 +3,22 @@ let (n, k) = (raw[0], raw[1])
 var dict = [Int:Int]()
 var result = 0
 
-readLine()!.split { $0 == " " }.forEach { dict[Int($0)!, default: 0] += 1 }
+let array = readLine()!.split { $0 == " " }.map { 
+    let value = Int($0)!
+    dict[value, default: 0] += 1;
+    return value
+}
 
-for key in dict.keys {
-    var temp = 0
-    let value = dict[key, default: 0]
-    let k = k - value
+for i in 0 ..< n {
+    dict[array[i], default: 0] -= 1
 
-    for secondKey in dict.keys {
-        if key == secondKey { continue }
+    for j in 0 ..< i {
+        let diff = k - (array[i] + array[j])
 
-        if k - secondKey == secondKey && dict[secondKey, default: 0] > 0 {
-            for i in 1 ..< dict[secondKey, default: 0] {
-                temp += 1
-            }
-            dict[secondKey] = 0
-        } else if dict[k - secondKey,default: 0] > 0 && dict[secondKey, default: 0] > 0 {
-            temp += dict[k - secondKey, default: 0] * dict[secondKey, default: 0]
-            dict[k - secondKey] = 0
-            dict[secondKey] = 0
+        if let value = dict[diff] {
+            result += value
         }
     }
-    
-    result = max(result, temp)
 }
 
 print(result)
