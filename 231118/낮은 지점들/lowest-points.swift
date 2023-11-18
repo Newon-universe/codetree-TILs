@@ -5,7 +5,7 @@ var result = 0
 for _ in 0 ..< n {
     let raw = readLine()!.split { $0 == " " }.map { Int($0)! }
 
-    if raw[1] < dict[raw[0], default: 100000] {
+    if raw[1] < dict[raw[0], default: 1000000001] {
         dict[raw[0]] = raw[1]
     }
 }
