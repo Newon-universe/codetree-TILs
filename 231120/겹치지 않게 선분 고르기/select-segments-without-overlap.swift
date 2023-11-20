@@ -19,7 +19,7 @@ func checker(_ depth: Int, _ now: [[Int]], _ index: Int) {
         }
         guard !isDuplicated else { continue }
 
-        checker(depth + 1, now + [lines[i]], index + 1)
+        checker(depth + 1, now + [lines[i]], i + 1)
     }
 }
 
@@ -32,5 +32,5 @@ for _ in 0 ..< n {
     lines.append(readLine()!.split { $0 == " " }.map { Int($0)! })
 }
 
-checker(0, [], 0)
+checker(0, [lines[0]], 0)
 print(result)
