@@ -1,10 +1,12 @@
 func duplicatedCheck(_ a: [Int], _ b: [Int]) -> Bool {
     if a[0] ... a[1] ~= b[0] || a[0] ... a[1] ~= b[1] { return true }
-    return false
+    if b[0] ... b[1] ~= a[0] || b[0] ... b[1] ~= a[1] { return true }
+    return false 
 }
 
 func checker(_ depth: Int, _ now: [[Int]], _ index: Int) {
     if depth == n {
+        result = max(now.count, result)
         return
     }
 
@@ -32,5 +34,5 @@ for _ in 0 ..< n {
     lines.append(readLine()!.split { $0 == " " }.map { Int($0)! })
 }
 
-checker(0, [lines[0]], 0)
-print(result)
+checker(0, [], 0)
+print(result == 0 ? 1 : result)
