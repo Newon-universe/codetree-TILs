@@ -2,7 +2,9 @@ func recursive(_ target: Int) -> Set<Int> {
     var result = Set<Int>()
     for i in 0 ..< g {
         board[i].remove(target)
-        if board[i].count == 1 { board[i].forEach { result.insert($0) } }
+        if board[i].count == 1 { 
+            board[i].forEach { if visited[$0] == nil { result.insert($0); visited[$0] = true } }
+        }
     }
 
     return result
@@ -27,7 +29,7 @@ while !target.isEmpty {
     var newTarget = Set<Int>()
 
     target.forEach {
-        var values = recursive($0)
+        let values = recursive($0)
         values.forEach { newTarget.insert($0) }
     }
     target = newTarget
