@@ -17,6 +17,7 @@ func permutation(_ depth: Int, _ now: [Coordinate]) {
 
     for i in 0 ..< coins.count {
         guard !visited[i] else { continue }
+        if let last = now.last, last.value >= coins[i].value { continue }
 
         visited[i] = true
         permutation(depth + 1, now + [coins[i]])
