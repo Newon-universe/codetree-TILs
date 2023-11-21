@@ -1,54 +1,77 @@
-struct Connection {
+struct Connection: Equatable, Hashable {
+    var y: Int
     var a: Int
     var b: Int
-    init(_ a: Int, _ b: Int) {
+    init(_ y: Int, _ a: Int, _ b: Int) {
+        self.y = y
         self.a = a
         self.b = b
     }
 }
 
-struct Coordinate {
-    var y: Int
-    var x: Int
-    init(_ y: Int, _ x: Int) {
-        self.y = y
-        self.x = x
+func combination(_ depth: Int, _ now: Set<Connection>, _ index: Int, _ target: Int) -> [Set<Connection>] {
+    if depth == target {
+        return [now]
     }
+
+    var result = [Set<Connection>]()
+    for i in index ..< m {
+        var tempNow = now; tempNow.insert(allLines[i])
+        let value = combination(depth + 1, tempNow, i + 1, target) 
+        result += (value) 
+    }
+
+    return result
 }
 
-func find(_ depth: Int, _ now: Int) -> Int {
-    if depth == m {
+func find(_ depth: Int, _ now: Int, _ crossLines: Set<Connection>) -> Int {
+    if depth == 16 {
         return now
     }
-
-    if let connection = board[depth][now] {
-        let tempNow = connection.a == now ? connection.b : connection.a
-        print(depth + 1, tempNow, "Move \(now) -> \(tempNow)")
-        return find(depth + 1, tempNow)
+    
+    if crossLines.contains(Connection(depth, now, now + 1)) {
+        return find(depth + 1, now + 1, crossLines)
+    } else if crossLines.contains(Connection(depth, now - 1, now)) {
+        return find(depth + 1, now - 1, crossLines)
     } else {
-        print(depth + 1, now, "No Move")
-        return find(depth + 1, now)
+        return find(depth + 1, now, crossLines)
     }
 }
-
 
 let raw = readLine()!.split { $0 == " " }.map { Int($0)! }
 
 let (n, m) = (raw[0], raw[1])
-var board = [[Connection?]](repeating: [Connection?](repeating: nil, count: n), count: m)
-var ignoredLine = [Coordinate]()
-var result = [Int](repeating: 0, count: n)
+var allLines = [Connection]()
+var result = [Int](repeating: -1, count: n)
 
 for _ in 0 ..< m {
     let raw = readLine()!.split { $0 == " " }.map { Int($0)! - 1 }
     let y = raw[1]
     let x = raw[0]
-    board[y][x] = Connection(x, x + 1)
-    board[y][x + 1] = Connection(x + 1, x)
+    allLines.append(Connection(y, x, x + 1))
 }
 
+var tempAllLines = Set<Connection>()
+allLines.forEach { tempAllLines.insert($0) }
 (0 ..< n).forEach {
-    print($0)
-    print(find(0, $0))
-    print()
+    result[$0] = find(0, $0, Set<Connection>(tempAllLines))
+}
+
+for crossLineCount in 0 ... 15 {
+    
+    let crossLinesCases = combination(0, [], 0, crossLineCount)
+    var flag = false
+    
+    var tempResult = [Int](repeating: -1, count: n)
+    for crossLines in crossLinesCases {
+        (0 ..< n).forEach { tempResult[$0] = find(0, $0, crossLines) }
+
+        if tempResult == result {
+            print(crossLineCount)
+            flag = true
+            break
+        }
+    }
+
+    if flag { break }
 }
