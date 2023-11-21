@@ -42,8 +42,8 @@ let equation = Array(readLine()!)
 let offSet: UInt8 = 97
 
 let array = [1, 2, 3, 4]
-var standards = permutation(0, [])
-var result = 0
+let standards = permutation(0, [])
+var result = Int.min
 
 standards.forEach { solve($0) }
 print(result)
