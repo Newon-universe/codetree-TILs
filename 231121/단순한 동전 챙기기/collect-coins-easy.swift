@@ -9,14 +9,18 @@ struct Coordinate {
     }
 }
 
-func combination(_ depth: Int, _ now: [Coordinate], _ index: Int) {
+func permutation(_ depth: Int, _ now: [Coordinate]) {
     if depth == 3 {
         solve(now)
         return
     }
 
-    for i in index ..< coins.count {
-        combination(depth + 1, now + [coins[i]], i + 1)
+    for i in 0 ..< coins.count {
+        guard !visited[i] else { continue }
+
+        visited[i] = true
+        permutation(depth + 1, now + [coins[i]])
+        visited[i] = false
     }
 }
 
@@ -49,10 +53,12 @@ for i in 0 ..< n {
         else if value != "." { coins.append(Coordinate(i, j, Int(value)!)) }
     }
 }
+var visited = [Bool](repeating: false, count: coins.count)
+
 
 if coins.count < 3 {
     print(-1)
 } else {
-    combination(0, [], 0)
+    permutation(0, [])
     print(result)
 }
