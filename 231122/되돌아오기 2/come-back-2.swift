@@ -22,7 +22,7 @@ var result = -1
 
 for value in oper {
     switch value {
-    case "L": dIndex = (dIndex - 1) % 4
+    case "L": if dIndex - 1 < 0 { dIndex = 3 } else { dIndex -= 1 }
     case "R": dIndex = (dIndex + 1) % 4
     case "F": now.y += directions[dIndex].y; now.x += directions[dIndex].x
     default: break
