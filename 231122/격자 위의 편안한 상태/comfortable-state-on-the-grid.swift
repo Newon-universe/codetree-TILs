@@ -23,7 +23,7 @@ func check(_ now: Coordinate) -> Int {
         if board[next.y][next.x] == 1 { temp += 1 }
     }
     
-    return temp >= 3 ? 1 : 0
+    return temp == 3 ? 1 : 0
 }
 
 let source = readLine()!.split { $0 == " " }.map { Int($0)! }
