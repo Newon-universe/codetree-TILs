@@ -8,9 +8,9 @@ struct Coordinate {
 }
 
 let directions = [
-    Coordinate(-1, 0),
-    Coordinate(0,1),
     Coordinate(1, 0),
+    Coordinate(0,1),
+    Coordinate(-1, 0),
     Coordinate(0, -1)
 ]
 
