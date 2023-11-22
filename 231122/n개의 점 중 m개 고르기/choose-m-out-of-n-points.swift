@@ -1,4 +1,4 @@
-struct Coordinate {
+struct Coordinate: Equatable {
     var y: Double
     var x: Double
     init(_ y: Double, _ x: Double) {
@@ -19,10 +19,15 @@ func combi(_ depth: Int, _ trace: [Coordinate], _ index: Int) {
 }
 
 func solve(_ trace: [Coordinate]) -> Int {
-    let tempDots = trace.sorted { $0.y + $0.x < $1.y + $1.x }
-    let value = Int((tempDots.last!.x - tempDots[0].x) * (tempDots.last!.x - tempDots[0].x) + (tempDots.last!.y - tempDots[0].y) * (tempDots.last!.y - tempDots[0].y))
+    var result = Int.max
+    for i in 0 ..< trace.count - 1 {
+        for j in i + 1 ..< trace.count {
+            let value = Int((trace[i].x - trace[j].x) * (trace[i].x - trace[j].x) + (trace[i].y - trace[j].y) * (trace[i].y - trace[j].y))
+            result = min(result, value)
+        }
+    }
     
-    return value
+    return result
 }
 
 let raw = readLine()!.split { $0 == " " }.map { Int($0)! }
