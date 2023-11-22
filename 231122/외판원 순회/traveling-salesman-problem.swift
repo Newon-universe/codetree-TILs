@@ -1,18 +1,24 @@
-func detour(_ depth: Int, _ cost: Int, _ now: Int) {
-    if depth == n {
-        result = min(cost + board[now][0], result)
+func detour(_ depth: Int, _ cost: Int, _ y: Int) {
+    if depth == n - 1 {
+        result = min(cost + board[y][0], result)
         return
     }
+    
 
-    for i in 0 ..< n {
-        guard !visited[i] else { continue }
-        guard i != now else { continue }
+    for x in 1 ..< n {
+        guard !visited[x] else { continue }
+        guard x != y else { continue }
+        guard board[y][x] != 0 else { continue }
 
-        visited[i] = true
-        detour(depth + 1, cost + board[now][i], i)
-        visited[i] = false
+        visited[x] = true
+        detour(depth + 1, cost + board[y][x], x)
+        visited[x] = false
     }
 }
+
+// 0 2 1 3 4
+
+// 0 + 0 + 8 + 6 + 3
 
 let n = Int(readLine()!)!
 var board = [[Int]]()
