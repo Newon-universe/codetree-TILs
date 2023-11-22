@@ -1,45 +1,27 @@
-struct Coordinate {
-    var y: Int
-    var x: Int
-    init(_ y: Int, _ x: Int) {
-        self.y = y
-        self.x = x
-    }
-}
-
-func combi(_ depth: Int, _ trace: [Int], _ index: Int) {
+func combi(_ depth: Int, _ y: Int, _ value: Int) {
     if depth == n {
-        var value = 0
-        for element in trace {
-            let y = element / n
-            let x = element % n
-            value += board[y][x]
-        }
-
         result = max(result, value)
         return
     }
 
-    for i in index ..< n * n {
-        var flag = false
+    for x in 0 ..< n {
+        guard !visited[x] else { continue }
         
-        trace.forEach {
-            if $0 / n == i / n || $0 % n == i % n { flag = true }
-        }
-
-        if flag { continue }
-        combi(depth + 1, trace + [i], i + 1)
+        visited[x] = true 
+        combi(depth + 1, y + 1, value + board[y][x])
+        visited[x] = false
     }
 }
 
 
 let n = Int(readLine()!)!
 var board = [[Int]]()
+var visited = [Bool](repeating: false, count: n)
 var result = 0
 
 for _ in 0 ..< n {
     board.append(readLine()!.split { $0 == " " }.map { Int($0)! })
 }
 
-combi(0, [], 0)
+combi(0, 0, 0)
 print(result)
