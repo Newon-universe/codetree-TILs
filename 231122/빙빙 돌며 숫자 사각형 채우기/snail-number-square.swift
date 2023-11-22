@@ -18,8 +18,8 @@ func find(_ depth: Int, _ now: Coordinate, _ check: Int) {
     guard check < 4 else { return }
     let next = Coordinate(now.y + directions[dIndex].y, now.x + directions[dIndex].x)
 
-    guard 0 ..< n ~= next.y && 0 ..< m ~= next.x else { dIndex += 1; dIndex %= n; find(depth, now, check + 1); return }
-    guard board[next.y][next.x] == 0 else { dIndex += 1; dIndex %= n; find(depth, now, check + 1); return }
+    guard 0 ..< n ~= next.y && 0 ..< m ~= next.x else { dIndex += 1; dIndex %= 4; find(depth, now, check + 1); return }
+    guard board[next.y][next.x] == 0 else { dIndex += 1; dIndex %= 4; find(depth, now, check + 1); return }
 
     board[next.y][next.x] = depth
     find(depth + 1, next, 0)
