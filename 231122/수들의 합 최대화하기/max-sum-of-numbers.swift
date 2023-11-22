@@ -9,18 +9,25 @@ struct Coordinate {
 
 func combi(_ depth: Int, _ trace: [Int], _ index: Int) {
     if depth == n {
-        let a = Coordinate(trace[0] / n, trace[0] % n)
-        let b = Coordinate(trace[1] / n, trace[1] % n)
-        let c = Coordinate(trace[2] / n, trace[2] % n)
+        var value = 0
+        for element in trace {
+            let y = element / n
+            let x = element % n
+            value += board[y][x]
+        }
 
-        guard a.x != b.x && a.x != c.x && b.x != c.x && a.y != b.y && a.y != c.y && b.y != c.y else { return }
-        
-        let value = board[a.y][a.x] + board[b.y][b.x] + board[c.y][c.x]
         result = max(result, value)
         return
     }
 
     for i in index ..< n * n {
+        var flag = false
+        
+        trace.forEach {
+            if $0 / n == i / n || $0 % n == i % n { flag = true }
+        }
+
+        if flag { continue }
         combi(depth + 1, trace + [i], i + 1)
     }
 }
