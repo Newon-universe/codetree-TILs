@@ -18,15 +18,17 @@ func combi(_ depth: Int, _ trace: [Coordinate], _ index: Int) {
     }
 }
 
-func solve(_ trace: [Coordinate]) -> Int {
-    var result = Int.max
+func solve(_ trace: [Coordinate]) -> Int {    
+    var result = 0
     for i in 0 ..< trace.count - 1 {
         for j in i + 1 ..< trace.count {
-            let value = Int((trace[i].x - trace[j].x) * (trace[i].x - trace[j].x) + (trace[i].y - trace[j].y) * (trace[i].y - trace[j].y))
-            result = min(result, value)
+            let x = trace[i].x - trace[j].x
+            let y = trace[i].y - trace[j].y
+            let value = Int((x * x) + (y * y))
+            result = max(value, result)
         }
     }
-    
+
     return result
 }
 
