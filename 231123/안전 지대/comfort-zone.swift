@@ -34,8 +34,8 @@ let (n, m) = (raw[0], raw[1])
 
 var board = [[Int]]()
 var visited = [[Bool]]()
-var count = 0
-var result = 0
+var count = -1
+var result = -1
 
 for _ in 0 ..< n {
     board.append(readLine()!.split { $0 == " " }.map { Int($0)! })
