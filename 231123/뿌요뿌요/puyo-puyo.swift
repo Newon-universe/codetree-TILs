@@ -41,8 +41,10 @@ for _ in 0 ..< n {
 for i in 0 ..< n {
     for j in 0 ..< n {
         if board[i][j] > 0 {
-            temp = 0
-            find(Coordinate(i, j), board[i][j])
+            temp = 1
+            let target = board[i][j]
+            board[i][j] = 0
+            find(Coordinate(i, j), target)
 
             if temp > 3 {
                 bombBlock += 1
