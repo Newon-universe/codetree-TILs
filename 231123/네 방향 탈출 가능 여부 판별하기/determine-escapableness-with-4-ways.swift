@@ -46,9 +46,9 @@ func solve() {
 
             guard 0 ..< n ~= next.y && 0 ..< m ~= next.x else { continue }
             guard board[next.y][next.x] == 1 else { continue }
-            if next.y == n - 1 && next.x == n - 1 { result = 1; return }
+            if next.y == n - 1 && next.x == m - 1 { result = 1; return }
 
-            board[next.y][next.x] = 2
+            board[next.y][next.x] = 0
             queue.enqueue(next)
         }
     }
