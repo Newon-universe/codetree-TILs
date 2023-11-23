@@ -13,7 +13,7 @@ let directions = [
 ]
 
 func dfs(_ now: Coordinate) {
-    if now.y == n - 1 && now.x == n - 1 {
+    if now.y == n - 1 && now.x == m - 1 {
         result = 1
         return
     }
