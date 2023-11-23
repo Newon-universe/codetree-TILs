@@ -17,7 +17,7 @@ struct Queue<T> {
     }
 }
 
-struct Coordinate {
+struct Coordinate: Equatable {
     var y: Int
     var x: Int
     var step: Int
@@ -68,4 +68,4 @@ let n = Int(readLine()!)!
 let source = readLine()!.split { $0 == " " }.map { Int($0)! - 1 }
 let (start, end) = (Coordinate(source[0], source[1], 0), Coordinate(source[2], source[3], 0))
 
-print(solve())
+print(start == end ? 0 : solve())
