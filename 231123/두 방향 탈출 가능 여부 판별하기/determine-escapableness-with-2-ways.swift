@@ -13,6 +13,7 @@ let directions = [
 ]
 
 func dfs(_ now: Coordinate) {
+    guard result == 0 else { return }
     if now.y == n - 1 && now.x == m - 1 {
         result = 1
         return
@@ -23,6 +24,7 @@ func dfs(_ now: Coordinate) {
         
         guard 0 ..< n ~= next.y && 0 ..< m ~= next.x else { continue }
         guard board[next.y][next.x] == 1 else { continue }
+        board[next.y][next.x] = 2
         dfs(next)
     }
 }
@@ -36,5 +38,5 @@ for _ in 0 ..< n {
     board.append(readLine()!.split { $0 == " " }.map { Int($0)! })
 }
 
-dfs(Coordinate(0 ,0))
+dfs(Coordinate(0,0))
 print(result)
