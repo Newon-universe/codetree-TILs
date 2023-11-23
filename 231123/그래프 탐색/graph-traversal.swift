@@ -13,7 +13,6 @@ func dfs(_ depth: Int, _ now: Int) -> Int {
     return result
 }
 
-
 let source = readLine()!.split { $0 == " " }.map { Int($0)! }
 let (n, m) = (source[0], source[1])
 var board = [[Bool]](repeating: [Bool](repeating: false, count: n), count: n)
@@ -26,12 +25,6 @@ for _ in 0 ..< m {
 }
 
 var visited = [Bool](repeating: false, count: n)
-var result = 0
+visited[0] = true
 
-(0 ..< n).forEach {
-    visited[$0] = true
-    result = max(dfs(0, $0), result)
-    visited[$0] = false
-}
-
-print(result)
+print(dfs(0, 0))
