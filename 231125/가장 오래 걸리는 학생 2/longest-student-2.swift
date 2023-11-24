@@ -1,5 +1,5 @@
 struct PriorityQueue<T: Equatable> {
-    private var elements: [T] = []
+    private var elements: [T]
     private let sort: (T, T) -> Bool
 
     init(_ sort: @escaping (T, T) -> Bool, _ elements: [T] = []) {
@@ -58,7 +58,10 @@ struct PriorityQueue<T: Equatable> {
     }
 }
 
-struct Node: Equatable {
+struct Node: Equatable, Comparable {
+    static func < (lhs: Node, rhs: Node) -> Bool {
+        return lhs.dist < rhs.dist
+    }
     var vertex: Int
     var dist: Int
     init(_ vertex: Int, _ dist: Int) {
@@ -68,36 +71,44 @@ struct Node: Equatable {
 }
 
 func solve() {
-    var pq = PriorityQueue<Node> { $0.dist < $1.dist }
-    var distance = [Int](repeating: Int.max, count: n)
+    var pq = PriorityQueue<Node>(<)
+    var distance = [Int: Int]()
+    var visited = [Int:Bool]()
 
     pq.enqueue(Node(n - 1, 0))
-    distance[n - 1] = 0
+    for key in graph.keys {
+        let value = key == n - 1 ? 0 : Int.max
+        distance.updateValue(value, forKey: key)
+    }
+    for vertex in 0 ..< n {
+        visited[vertex] = false
+    }
 
     while let now = pq.dequeue() {
-        if now.dist < distance[now.vertex] { continue }
+        guard !visited[now.vertex]! else { continue }
+        visited[now.vertex]! = true
 
-        for vertex in 0 ..< n {
-            if graph[now.vertex][vertex] == 0 || graph[now.vertex][vertex] == Int.max { continue }
-            
-            let newDist = distance[now.vertex] + graph[now.vertex][vertex]
-            if newDist < distance[vertex] {
+        for (vertex, dist) in graph[now.vertex, default: [:]]  {
+
+            let newDist = now.dist + dist
+            if newDist < distance[vertex, default: Int.max] {
                 distance[vertex] = newDist
                 pq.enqueue(Node(vertex, newDist))
             }
         }
     }
 
-    print(distance.max() ?? -1)
+    print(distance.values.max()!)
 }
 
 let source = readLine()!.split { $0 == " " }.map { Int($0)! }
 let (n, m) = (source[0], source[1])
-var graph = [[Int]](repeating: [Int](repeating: Int.max, count: n), count: n)
+var graph = [Int: [Int:Int]]()
 
 for _ in 0 ..< m {
     let raw = readLine()!.split { $0 == " " }.map { Int($0)! - 1 }
-    graph[raw[1]][raw[0]] = raw[2] + 1
+
+    graph[raw[1], default: [:]].merge([raw[0]: raw[2] + 1]) { $1 }
 }
 
 solve()
