@@ -30,6 +30,7 @@ func solve() -> Int {
     var queue = Queue<Node>()
     var visited = [Bool](repeating: false, count: 1000001)
     queue.enqueue(Node(n, 0))
+    visited[n] = true
 
     while !queue.isEmpty {
         let now = queue.dequeue()
@@ -44,8 +45,9 @@ func solve() -> Int {
             case 3: if next.value % oper == 0 { next.value /= 3 } else { continue }
             default: break
             }
-
+            guard 1 ... 1000000 ~= next.value else { continue }
             guard !visited[next.value] else { continue }
+            
             if next.value == 1 { return next.step }
 
             queue.enqueue(next)
@@ -57,4 +59,4 @@ func solve() -> Int {
 }
 
 let n = Int(readLine()!)!
-print(solve())
+print(n == 1 ? 0 : solve())
