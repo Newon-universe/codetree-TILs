@@ -1,4 +1,4 @@
-struct PriorityQueue<T> {
+struct PriorityQueue<T: Equatable> {
     private var elements: [T]
     private let sort: (T, T) -> Bool
 
@@ -22,9 +22,11 @@ struct PriorityQueue<T> {
         elements.append(node)
         siftUp(count - 1)
     }
+
     mutating private func siftUp(_ i: Int) {
         var child = i
         var parent = parentIndex(child)
+
         while child > 0 && sort(elements[child], elements[parent]) {
             elements.swapAt(child, parent)
             child = parent
@@ -41,6 +43,7 @@ struct PriorityQueue<T> {
 
     mutating private func siftDown(_ i: Int) {
         var parent = i
+
         while true {
             let left = leftChildIndex(parent)
             let right = rightChildIndex(parent)
@@ -56,43 +59,56 @@ struct PriorityQueue<T> {
     }
 }
 
+struct Node: Equatable {
+    var vertex: Int
+    var dist: Int
+    init(_ vertex: Int, _ dist: Int) {
+        self.vertex = vertex
+        self.dist = dist
+    }
+}
+
 func solve() {
-    var pq = PriorityQueue<Int>(<)
-    var distance = [Int](repeating: Int.max, count: n)
-    pq.enqueue(k)
-    distance[k] = 0
+    var pq = PriorityQueue<Node>({ $0.dist < $1.dist })
+    var distance = [Int: Int]()
+    
+    pq.enqueue(Node(k, 0))
+    for key in graph.keys {
+        let value = key == k ? 0 : Int.max
+        distance.updateValue(value, forKey: key)
+    }
 
     while let now = pq.dequeue() {
-        for vertex in 0 ..< n {
-            if graph[now][vertex] == Int.max || graph[now][vertex] == 0 { continue }
-            
-            let nowToVertex = distance[now] + graph[now][vertex]
-            if nowToVertex < distance[vertex] {
-                distance[vertex] = nowToVertex
-                pq.enqueue(vertex)
+        if distance[now.vertex]! < now.dist { continue }
+        
+        for (vertex, dist) in graph[now.vertex]! {            
+            let newDist = now.dist + dist
+            if newDist < distance[vertex]! {
+                distance[vertex] = newDist
+                pq.enqueue(Node(vertex, newDist))
             }
         }
     }
 
     var result = ""
-    for dist in distance {
+    for i in 0 ..< n {
+        let dist = distance[i, default: Int.max]
         if dist == Int.max { result += "-1\n" }
         else { result += "\(dist)\n" }
     }
     print(result)
 }
 
-
 let source = readLine()!.split { $0 == " " }.map { Int($0)! }
 let (n, m) = (source[0], source[1])
 let k = Int(readLine()!)! - 1
 
-var graph = [[Int]](repeating: [Int](repeating: Int.max, count: n), count: n)
+var graph = [Int: [Int:Int]]()
 
 for _ in 0 ..< m {
     let raw = readLine()!.split { $0 == " " }.map { Int($0)! - 1 }
-    graph[raw[0]][raw[1]] = raw[2] + 1
-    graph[raw[1]][raw[0]] = raw[2] + 1
+    graph[raw[0], default: [:]].merge([raw[1]: raw[2] + 1]) { $1 }
+    graph[raw[1], default: [:]].merge([raw[0]: raw[2] + 1]) { $1 }
 }
 
 solve()
