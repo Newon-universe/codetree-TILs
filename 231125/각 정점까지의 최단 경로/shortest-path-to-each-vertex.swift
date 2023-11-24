@@ -71,14 +71,18 @@ struct Node: Equatable {
 func solve() {
     var pq = PriorityQueue<Node>({ $0.dist < $1.dist })
     var distance = [Int: Int]()
+    var visited = [Int: Bool]()
     
     pq.enqueue(Node(k, 0))
     for key in graph.keys {
         let value = key == k ? 0 : Int.max
         distance.updateValue(value, forKey: key)
+        visited[key] = false
     }
 
     while let now = pq.dequeue() {
+        guard !visited[now.vertex]! else { continue }
+        visited[now.vertex]! = true
         if distance[now.vertex]! < now.dist { continue }
         
         for (vertex, dist) in graph[now.vertex]! {            
