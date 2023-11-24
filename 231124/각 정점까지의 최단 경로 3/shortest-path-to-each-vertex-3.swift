@@ -79,7 +79,7 @@ func solve() {
     }
 
     var result = ""
-    for element in 1 ..< n { result += "\(distance[element])\n" }
+    for element in 1 ..< n { result += "\(distance[element] == Int.max ? -1 : distance[element])\n" }
     print(result)
 }
 
