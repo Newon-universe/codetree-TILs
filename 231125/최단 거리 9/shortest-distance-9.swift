@@ -103,9 +103,10 @@ func solve() {
     let result = "\(distance[b, default: Int.max])\n"
     var temp = "\(b + 1) "
     var check = b
-    while check != 0 {
-        temp = "\(path[check]! + 1) " + temp
-        check = path[check]!
+    
+    while let nextPath = path[check], check != 0 {
+        temp = "\(nextPath + 1) " + temp
+        check = nextPath
     }
     print(result + temp)
 
