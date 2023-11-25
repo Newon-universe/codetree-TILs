@@ -101,15 +101,14 @@ func solve() {
     }
 
     let result = "\(distance[b, default: Int.max])\n"
-    var temp = "\(b + 1) "
-    var check = b
+    // var temp = "\(b + 1) "
+    // var check = b
     
-    while let nextPath = path[check], check != 0 {
-        temp = "\(nextPath + 1) " + temp
-        check = nextPath
-    }
-    print(result + temp)
-
+    // while let nextPath = path[check], check != 0 {
+    //     temp = "\(nextPath + 1) " + temp
+    //     check = nextPath
+    // }
+    // print(result + temp)
 }
 
 var source = readLine()!.split { $0 == " " }.map { Int($0)! }
