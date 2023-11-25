@@ -2,7 +2,7 @@ struct PriorityQueue<T: Equatable> {
     private var elements: [T]
     private let sort: (T, T) -> Bool
 
-    init(_ sort: @escaping (T, T) -> Bool, _ elements: [T] = []) {
+    init(_ sort: @escaping (T, T) -> Bool,_ elements: [T] = []) {
         self.sort = sort
         self.elements = elements
 
@@ -22,7 +22,7 @@ struct PriorityQueue<T: Equatable> {
         elements.append(node)
         siftUp(count - 1)
     }
-    
+
     mutating private func siftUp(_ i: Int) {
         var child = i
         var parent = parentIndex(child)
@@ -36,6 +36,7 @@ struct PriorityQueue<T: Equatable> {
 
     mutating func dequeue() -> T? {
         guard !isEmpty else { return nil }
+
         elements.swapAt(0, count - 1)
         defer { siftDown(0) }
         return elements.removeLast()
@@ -50,21 +51,17 @@ struct PriorityQueue<T: Equatable> {
 
             if left < count && sort(elements[left], elements[candidate]) { candidate = left }
             if right < count && sort(elements[right], elements[candidate]) { candidate = right }
-            if candidate == parent { return }
+            if parent == candidate { return }
 
-            elements.swapAt(parent, candidate)
+            elements.swapAt(candidate, parent)
             parent = candidate
         }
     }
 }
 
-struct Node: Equatable, Comparable {
-    static func < (lhs: Node, rhs: Node) -> Bool {
-        return lhs.dist < rhs.dist
-    }
-
-    var vertex: Int
-    var dist: Int
+struct Node: Equatable {
+    let vertex: Int
+    let dist: Int
     init(_ vertex: Int, _ dist: Int) {
         self.vertex = vertex
         self.dist = dist
@@ -72,56 +69,63 @@ struct Node: Equatable, Comparable {
 }
 
 func solve() {
-    var pq = PriorityQueue<Node>(<)
-    var distance = [Int: Int]()
-    var path = [Int: Int]()
-    var visited = [Int: Bool]()
+    var pq = PriorityQueue<Node> { $0.dist < $1.dist }
+    var distances = [Int:Int]()
+    var visited = [Int:Bool]()
 
     pq.enqueue(Node(a, 0))
     for key in graph.keys {
         let value = key == a ? 0 : Int.max
-        distance.updateValue(value, forKey: key)
-        path.updateValue(Int.max, forKey: key)
+        distances.updateValue(value, forKey: key)
+        visited.updateValue(false, forKey: key)
     }
-    for i in 0 ..< n { visited[i] = false }
 
     while let now = pq.dequeue() {
         guard !visited[now.vertex]! else { continue }
         visited[now.vertex] = true
-        
-        for (vertex, dist) in graph[now.vertex, default: [:]] {
-            let newDist = now.dist + dist
 
-            if newDist < distance[vertex, default: Int.max] {
-                distance[vertex] = newDist
-                path[vertex] = now.vertex
+        for (vertex, dist) in graph[now.vertex]! {
+            let newDist = now.dist + dist
+            if newDist < distances[vertex]! {
+                distances[vertex] = newDist
                 pq.enqueue(Node(vertex, newDist))
             }
         }
     }
 
-    let result = "\(distance[b, default: Int.max])\n"
-    // var temp = "\(b + 1) "
-    // var check = b
-    
-    // while let nextPath = path[check], check != 0 {
-    //     temp = "\(nextPath + 1) " + temp
-    //     check = nextPath
-    // }
-    // print(result + temp)
+    let result = "\(distances[b]!)\n"
+    var tempIndex = b
+    var temp = "\(b) "
+
+    while tempIndex != a {
+        for i in stride(from: n, to: 0, by: -1) { 
+            guard let edge = graph[i] else { continue }
+            guard let edgeDist = edge[tempIndex] else { continue }
+            guard let currentDist = distances[i] else { continue }
+
+            if currentDist + edgeDist == distances[tempIndex]! {
+                tempIndex = i
+                temp = "\(i) " + temp
+                break
+            }
+        }
+    }
+
+    print(result + temp)
 }
 
-var source = readLine()!.split { $0 == " " }.map { Int($0)! }
+
+let source = readLine()!.split { $0 == " " }.map { Int($0)! }
 let (n, m) = (source[0], source[1])
-var graph = [Int: [Int:Int]]()
 
+var graph = [Int: [Int: Int]]()
 for _ in 0 ..< m {
-    let raw = readLine()!.split { $0 == " " }.map { Int($0)! - 1 }
-    graph[raw[0], default: [:]].merge([raw[1]: raw[2] + 1]) { $1 }
-    graph[raw[1], default: [:]].merge([raw[0]: raw[2] + 1]) { $1 }
+    let raw = readLine()!.split { $0 == " " }.map { Int($0)!}
+    graph[raw[0], default: [:]].merge([raw[1]: raw[2]]) { $1 }
+    graph[raw[1], default: [:]].merge([raw[0]: raw[2]]) { $1 }
 }
 
-source = readLine()!.split { $0 == " " }.map { Int($0)! - 1 }
-let (a, b) = (source[0], source[1])
+let source2 = readLine()!.split { $0 == " " }.map { Int($0)! }
+let (a, b) = (source2[0], source2[1])
 
 solve()
