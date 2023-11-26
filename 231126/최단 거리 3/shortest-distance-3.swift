@@ -74,27 +74,30 @@ struct Node: Equatable, Comparable {
 
 func solve() {
     var pq = PriorityQueue<Node>(<)
-    var distances = [Int](repeating: Int.max, count: n + 1)
-    var visited = [Bool](repeating: false, count: n + 1)
+    var distances = [Int: Int]()
+    var visited = [Int:Bool]()
 
     pq.enqueue(Node(a, 0))
-    distances[a] = 0
+    for key in graph.keys {
+        distances[key] = key == a ? 0 : Int.max
+        visited[key] = false
+    }
 
     while let now = pq.dequeue() {
-        guard !visited[now.vertex] else { continue }
+        guard !visited[now.vertex]! else { continue }
         visited[now.vertex] = true
 
-        for (vertex, dist) in graph[now.vertex, default: [:]] {
-            let newDist = dist + distances[now.vertex]
+        for (vertex, dist) in graph[now.vertex]! {
+            let newDist = now.dist + dist
             
-            if newDist < distances[vertex] {
+            if newDist < distances[vertex]! {
                 distances[vertex] = newDist
                 pq.enqueue(Node(vertex, newDist))
             }
         }
     }
 
-    print(distances[b])
+    print(distances[b] ?? -1)
 }
 
 let source = readLine()!.split { $0 == " " }.map { Int($0)! }
